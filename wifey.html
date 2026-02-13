@@ -252,6 +252,18 @@
       100% { transform: scale(1); text-shadow: 0 0 6px rgba(255,64,129,0.5); }
     }
 
+    /* final image styling */
+    .final-image-wrap {
+      margin-top: 12px;
+      display: flex;
+      justify-content: center;
+    }
+    .final-image {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(204,64,119,0.5);
+    }
+
     @media (max-width: 480px) {
       .headline { font-size: 1.45rem; }
       .card { border-radius: 20px; }
@@ -352,7 +364,7 @@
         </div>
       </section>
 
-      <!-- SCREEN 4 -->
+      <!-- SCREEN 4 (image only) -->
       <section class="screen" id="screen4">
         <div class="screen-content">
           <div class="tagline">The future I pray for</div>
@@ -360,19 +372,8 @@
             Our little family, our forever home
           </div>
 
-          <div class="photo-card">
-            <div class="photo-bg" id="familyPhotoBg"></div>
-            <div class="photo-overlay">
-              <div>
-                <div class="photo-title">From two hearts to a whole universe</div>
-                <p class="photo-caption">
-                  This is how I picture our future. You, me, and a small tribe that laughs in our living room, steals our blankets, and calls our story home. One day there will be tiny versions of us running around, rolling their eyes at how much we still flirt in the kitchen, and secretly loving that their parents are best friends first and forever. When I say I choose you, it is not just for the last five years, it is for every morning we get to wake up in this little world we built together.
-                </p>
-              </div>
-              <div class="tiny-note">
-                Thank you for being my now and my always. I cannot wait for every chapter that has your name in it. 💕
-              </div>
-            </div>
+          <div class="final-image-wrap">
+            <img src="1.jpeg" alt="Our future together" class="final-image" />
           </div>
 
           <div class="buttons-row" style="margin-top: 12px;">
