@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Will You Be My Valentine? ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg1: #fce4ec;
+      --bg2: #f8bbd0;
+      --bg3: #f48fb1;
+      --accent-pink: #ff6b9d;
+      --accent-soft: #ffe3ef;
+      --text-main: #4a1024;
+      --text-soft: #7b2944;
+      --pill-bg: #ffffffaa;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background: radial-gradient(circle at top,var(--bg3) 0%,var(--bg2) 30%,var(--bg1) 100%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+    @media (min-width: 768px) { body { padding: 32px; } }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(42px);
+      opacity: 0.7;
+      mix-blend-mode: screen;
+      animation: blobMove 18s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob.blob-1 { width: 260px; height: 260px; background: #ffb6c1; top: -40px; left: -60px; }
+    .blob.blob-2 { width: 260px; height: 260px; background: #f8bbd0; bottom: -80px; right: -50px; animation-duration: 22s; }
+    .blob.blob-3 { width: 220px; height: 220px; background: #ffc1e3; bottom: 40%; left: 55%; animation-duration: 26s; }
+
+    @keyframes blobMove {
+      0% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(20px,-20px,0) scale(1.1); }
+      100% { transform: translate3d(-10px,10px,0) scale(0.95); }
+    }
+
+    .floating-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+    .float-emoji { position: absolute; font-size: 1.6rem; opacity: 0.9; animation: floatUp 11s linear infinite; }
+
+    @keyframes floatUp {
+      0% { transform: translateY(120%); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-30%); opacity: 0; }
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 480px;
+      background: radial-gradient(circle at top left,#ffe9f2 0%,#fff7fb 45%,#ffe0ef 100%);
+      border-radius: 24px;
+      padding: 20px 16px 16px;
+      box-shadow: 0 22px 44px rgba(204,64,119,0.4);
+      border: 1px solid rgba(255,182,193,0.7);
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      max-height: 100%;
+      overflow: hidden;
+      animation: cardFloat 4s ease-in-out infinite alternate;
+    }
+    @keyframes cardFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
+    @media (min-width: 768px) { .card { padding: 24px 20px 20px; max-width: 540px; } }
+
+    .card-inner { display: flex; flex-direction: column; height: 100%; }
+
+    .screen { flex: 1; display: none; overflow: hidden; flex-direction: column; }
+    .screen.active { display: flex; }
+
+    .screen-content {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* make long story scroll inside screen 2 */
+    #screen2 .screen-content {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .screen-footer {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255,182,193,0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tagline {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(122,41,68,0.7);
+      text-align: center;
+    }
+
+    .headline {
+      font-size: 1.65rem;
+      line-height: 1.3;
+      font-weight: 700;
+      color: var(--text-main);
+      text-align: center;
+    }
+
+    .headline span.accent { color: var(--accent-pink); }
+    .copy { font-size: 0.96rem; line-height: 1.6; color: var(--text-soft); text-align: left; }
+
+    .buttons-row { display: flex; flex-direction: column; gap: 10px; }
+    @media (min-width: 460px) { .buttons-row { flex-direction: row; justify-content: center; } }
+
+    .btn {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+      background: var(--pill-bg);
+      color: var(--text-main);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg,#ff9ac4,#ff6b9d);
+      color: #3c0719;
+      box-shadow: 0 10px 22px rgba(255,105,180,0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.95);
+      color: var(--text-soft);
+      border: 1px solid rgba(255,182,193,0.9);
+    }
+
+    .btn.pulse { animation: pulseBtn 2s ease-in-out infinite; }
+
+    @keyframes pulseBtn {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,105,180,0.5); }
+      50% { transform: scale(1.03); box-shadow: 0 0 12px 4px rgba(255,105,180,0.55); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,105,180,0.3); }
+    }
+
+    .btn:active { transform: scale(0.97); box-shadow: none; }
+    .btn:hover { transform: translateY(-1px); }
+
+    .meta { font-size: 0.8rem; color: rgba(122,41,68,0.7); text-align: center; }
+
+    #heartMeterWrap { text-align: left; }
+    #heartMeterLabel { font-size: 0.78rem; color: rgba(122,41,68,0.75); margin-bottom: 4px; }
+
+    #heartMeterBar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,192,203,0.3);
+      overflow: hidden;
+    }
+
+    #heartMeterFill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg,#ff6b9d,#ff4081);
+      border-radius: 999px;
+      transition: width 0.6s ease-out;
+    }
+
+    #heartMeterHint { margin-top: 4px; font-size: 0.74rem; color: rgba(122,41,68,0.7); }
+
+    .photo-card {
+      margin-top: 8px;
+      border-radius: 18px;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg,rgba(255,255,255,0.5),transparent 65%),
+        radial-gradient(circle at bottom left,rgba(244,143,177,0.35),transparent 60%);
+      border: 1px solid rgba(255,182,193,0.9);
+      box-shadow: 0 16px 28px rgba(204,64,119,0.5);
+      position: relative;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .photo-bg {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.8;
+      filter: saturate(1.05);
+      transform: scale(1.05);
+      animation: slowZoom 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes slowZoom { 0% { transform: scale(1.05); } 100% { transform: scale(1.12); } }
+
+    .photo-overlay {
+      position: relative;
+      z-index: 1;
+      padding: 16px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(to top,rgba(64,0,21,0.9),rgba(64,0,21,0.2));
+    }
+
+    .photo-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: #ffeef8; text-align: left; }
+    .photo-caption { font-size: 0.9rem; color: #ffe9f4; line-height: 1.6; text-align: left; }
+    .tiny-note { margin-top: 10px; font-size: 0.75rem; color: #ffe0f0; text-align: right; }
+
+    #bigHeart {
+      font-size: 2.8rem;
+      margin: 10px auto 6px;
+      cursor: pointer;
+      animation: glowHeart 1.8s ease-in-out infinite;
+      text-shadow: 0 0 12px rgba(255,64,129,0.7);
+    }
+
+    @keyframes glowHeart {
+      0% { transform: scale(1); text-shadow: 0 0 6px rgba(255,64,129,0.4); }
+      50% { transform: scale(1.12); text-shadow: 0 0 16px rgba(255,64,129,0.9); }
+      100% { transform: scale(1); text-shadow: 0 0 6px rgba(255,64,129,0.5); }
+    }
+
+    /* Full screen image for final screen */
+    .final-image-screen {
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .final-image-container {
+      width: 100%;
+      max-width: 480px;
+      height: 60vh;
+      max-height: 500px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(204,64,119,0.6);
+      border: 2px solid rgba(255,182,193,0.8);
+    }
+
+    .final-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background-size: cover;
+      background-position: center;
+    }
+
+    @media (max-width: 480px) {
+      .headline { font-size: 1.45rem; }
+      .card { border-radius: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="floating-layer" id="floatingLayer"></div>
+
+  <div class="card">
+    <div class="card-inner">
+
+      <!-- SCREEN 1 -->
+      <section class="screen active" id="screen1">
+        <div class="screen-content">
+         <div class="tagline">Quick announcement from your favorite person</div>
+         <div class="headline">
+           Will you be my <span class="accent">Valentine</span>?
+         </div>
+         <p class="copy">
+           You do not have another option wifey. My heart already decided and it refused to fill any form that had a no in it.
+         </p>
+        </div>
+
+        <div class="screen-footer">
+         <div class="buttons-row">
+           <button class="btn btn-primary pulse" id="s1Yes1">
+             Yes obviously 💌
+           </button>
+           <button class="btn btn-secondary" id="s1Yes2">
+             Yes again, just to be sure
+           </button>
+         </div>
+         <p class="meta">
+           (Both buttons do the same thing because your answer was always yes.)
+         </p>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 -->
+      <section class="screen" id="screen2">
+        <div class="screen-content">
+         <div class="tagline">Five years of us</div>
+         <div class="headline">
+           From long distance to coming home to you
+         </div>
+         <p class="copy">
+           Here is the truth under every small moment we share. For five years our love travelled between Punjab and Bengaluru while we stared at screens and pretended video calls were enough. Phones heated in our hands, eyes half closed, still refusing to sleep because good night never felt right until we heard each other breathe on the other side. Networks misbehaved, calls dropped in the middle of funny stories, screenshots froze on the most unflattering faces, and still none of it made us give up. It became our ritual: two cities, two tired people, one stubborn love that kept choosing to show up again and again. Somewhere in those years, we quietly promised each other that one day distance would not get to be part of our story anymore.
+           <br/><br/>
+           And then it happened. We got married. We went from counting days on calendars to counting cups of chai we pour for each other in the same kitchen. From wishing for hugs through a screen to bumping into each other in the hallway and smiling like it is still the first time. Now your slippers are next to mine at the door, your laugh is inside these walls instead of my headphones, and every ordinary day feels like the thing I had been dreaming about all along. Long distance trained our hearts to hold on; marriage gave them a place to rest. After five years of waiting, we are finally on the same side of the distance, and I am never getting tired of calling you mine.
+         </p>
+
+         <div class="buttons-row" style="margin-top: 12px; margin-bottom: 8px;">
+           <button class="btn btn-primary pulse" id="showFutureBtn">
+             ✨ Show Our Future ✨
+           </button>
+         </div>
+         <p class="meta">
+           (Tap when your heart is ready to see what tomorrow holds for us.)
+         </p>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 -->
+      <section class="screen" id="screen3">
+        <div class="screen-content">
+         <div class="tagline">Official forever partner unlocked</div>
+         <div class="headline">
+           This is what our yes looks like
+         </div>
+
+         <div id="bigHeart">❤️</div>
+
+         <div class="photo-card">
+           <div class="photo-bg" id="couplePhotoBg"></div>
+           <div class="photo-overlay">
+             <div>
+               <div class="photo-title">One picture, all our chapters</div>
+               <p class="photo-caption">
+                 This is not just a cute photo. This is five years of calls, airport goodbyes, countdowns, and whispered I miss you promises that finally found a place to rest. It is the proof that we survived distance, learned patience, and still chose each other every single time. Now the miles are gone, the suitcase is unpacked, and my favorite view is simply you, standing right next to me instead of behind a screen.
+               </p>
+             </div>
+             <div class="tiny-note">
+               Happy Valentine's Day, my wife, my home, my forever.
+             </div>
+           </div>
+         </div>
+
+         <div class="buttons-row" style="margin-top: 12px;">
+           <button class="btn btn-primary pulse" id="s3Next">
+             Next chapter: our little family →
+           </button>
+         </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 - FINAL IMAGE SCREEN (NEW) -->
+      <section class="screen final-image-screen" id="screen5">
+        <div class="screen-content">
+          <div class="final-image-container">
+            <img src="1.jpeg" alt="Our Final Moment" class="final-image">
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    const screens = [
+      document.getElementById("screen1"),
+      document.getElementById("screen2"),
+      document.getElementById("screen3"),
+      document.getElementById("screen5"), // Changed to screen5
+    ];
+
+    function showScreen(index) {
+      screens.forEach((s, i) => s.classList.toggle("active", i === index));
+      const content = screens[index].querySelector(".screen-content");
+      if (content) content.scrollTop = 0;
+    }
+
+    const floatingLayer = document.getElementById("floatingLayer");
+    const emojis = ["❤️","💖","💘","🌹","💐"];
+
+    function spawnFloatingEmoji() {
+      const span = document.createElement("span");
+      span.className = "float-emoji";
+      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      span.style.left = Math.random() * 100 + "%";
+      span.style.animationDuration = 9 + Math.random() * 6 + "s";
+      span.style.fontSize = 1.4 + Math.random() * 1.2 + "rem";
+      floatingLayer.appendChild(span);
+      setTimeout(() => span.remove(), 17000);
+    }
+    setInterval(spawnFloatingEmoji, 1000);
+
+    function burstHearts(count) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(spawnFloatingEmoji, i * 70);
+      }
+    }
+
+    const s1Yes1 = document.getElementById("s1Yes1");
+    const s1Yes2 = document.getElementById("s1Yes2");
+    const showFutureBtn = document.getElementById("showFutureBtn");
+    const s3Next = document.getElementById("s3Next");
+    const bigHeart = document.getElementById("bigHeart");
+
+    const couplePhotoBg = document.getElementById("couplePhotoBg");
+    couplePhotoBg.style.backgroundImage = 'url("https://via.placeholder.com/600x400/ff69b4/ffffff?text=Your+Couple+Photo")';
+
+    function goToScreen2() {
+      showScreen(1);
+      burstHearts(12);
+    }
+
+    function goToPhotoPage() {
+      showScreen(2);
+      burstHearts(16);
+    }
+
+    function goToFinalScreen() {
+      showScreen(3); // Now screen5 is index 3
+      burstHearts(25);
+    }
+
+    if (s1Yes1) s1Yes1.addEventListener("click", goToScreen2);
+    if (s1Yes2) s1Yes2.addEventListener("click", goToScreen2);
+    if (showFutureBtn) showFutureBtn.addEventListener("click", goToPhotoPage);
+    if (s3Next) s3Next.addEventListener("click", goToFinalScreen);
+    if (bigHeart) bigHeart.addEventListener("click", () => burstHearts(18));
+  </script>
+</body>
+</html>
